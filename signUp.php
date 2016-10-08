@@ -19,10 +19,18 @@
 				
 			if(mysqli_query($con,$sql)){
 				echo 'Successfully registered.';
+				$sql2 = "SELECT * FROM user WHERE emailAddress='$emailAddress'";
+				$insertedUser = mysqli_fetch_array(mysqli_query($con,$sql2));
+				echo "\n";
+				echo $insertedUser['userID'];
 			}else{
 				echo 'Please try again.';
 			}
 		}
+		
+		
+		
+		
 		mysqli_close($con);
 	}
  
