@@ -8,7 +8,7 @@
 		require_once "dbConnect.php";
 		
 		$path = "profilePictures/$emailAddress.jpg";
-		$actualpath = "localhost/StudyBuddy/$path";
+		$actualpath = "http://192.168.43.103/StudyBuddy/$path";
 	 	$sql = "UPDATE user SET profPicPath = '$actualpath' WHERE emailAddress = '$emailAddress'";
 				
 		if(mysqli_query($con,$sql)){
