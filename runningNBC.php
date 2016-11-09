@@ -6,9 +6,10 @@
 		$levelOfStudyPreference = $_POST['levelOfStudyPreference'];
 		$postID = $_POST['postID'];
 		$subjects = $_POST['subjects'];
+		$userID = $_POST['userID'];
 		$subjectsArray = explode("\n", $subjects);
-		echo sizeof($subjectsArray);
-				
+		
+		$checkUserID=null;
 		$checkUserMeetPref = null;
 		$checkUserLevel = null;
 		$checkRating = null;
@@ -18,23 +19,27 @@
 		$levelOfStudyPreferenceInput = null;
 		$ratingInput = null;
 		$seldomHelpInput = null;
+				
+		$file = 'NBCLog.txt';
 		
 	
 	require_once "dbConnect.php";
 	
 	for ($x = 0; $x < sizeof($subjectsArray); $x++) {
-	echo $x;
+
 	$sql = "SELECT * FROM subjectassignment 
 			JOIN subject ON subject.subjectID = subjectassignment.subjectID
 			JOIN user ON user.userID = subjectassignment.userID
 			WHERE subjectTitle = '$subjectsArray[$x]'";
 			
-	echo $subjectsArray[$x];
-				
+	$current = file_get_contents($file);
+	$current .= "\r\n".$subjectsArray[$x]."\r\n";
+	file_put_contents($file, $current);
+					
 	$result = mysqli_query($con,$sql);
 		
 	
-		if($result->num_rows > 0) {
+	if($result->num_rows > 0) {
 				
 			while ($row = $result -> fetch_assoc()){
 				 
@@ -42,15 +47,24 @@
 				$checkUserLevel = $row["lvlOfStudy"];
 				$checkRating = $row["rating"];
 				$checkNoOfHelp = $row["noOfHelp"];
-				$userID = $row["userID"];
+				$checkUserID = $row["userID"];
 				
-				echo $userID;
+				$current = file_get_contents($file);
+				$current .= $checkUserID."-";
+				file_put_contents($file, $current);
+		
 				
+			if($userID != $checkUserID ){
 				if($checkUserMeetPref == $userPreferredMeetingType){
 					$meetingTypeInput = "match";
 				} else {
 					$meetingTypeInput = "xmatch";
 				}
+				
+				$current = file_get_contents($file);
+				$current .= $meetingTypeInput." ";
+				file_put_contents($file, $current);
+				
 				
 				if($checkUserLevel == $levelOfStudyPreference){
 					$levelOfStudyPreferenceInput = "match";
@@ -58,46 +72,87 @@
 					$levelOfStudyPreferenceInput = "xmatch";
 				}
 				
+				$current = file_get_contents($file);
+				$current .= $levelOfStudyPreferenceInput." ";
+				file_put_contents($file, $current);
+								
 				if($checkRating < 3.0){
 					$ratingInput = "low";
 				} else {
 					$ratingInput = "high";
 				}
 				
+				$current = file_get_contents($file);
+				$current .= $ratingInput." ";
+				file_put_contents($file, $current);
+				
+				
 				if($checkNoOfHelp < 3){
 					$seldomHelpInput = "seldom";
 				} else {
 					$seldomHelpInput = "alot";
 				}
-								
-				exec ( "java.exe -jar StudyBuddyNBC.jar '$meetingTypeInput' '$levelOfStudyPreferenceInput' '$ratingInput' '$seldomHelpInput'", $javaResult );
+				
+				$current = file_get_contents($file);
+				$current .= $seldomHelpInput."\r\n";
+				file_put_contents($file, $current);
+				
+						
+				exec ( "java.exe -jar StudyBuddyNBC.jar $meetingTypeInput $levelOfStudyPreferenceInput $ratingInput $seldomHelpInput", $javaResult );
+				
 				
 				if($javaResult[2] == "Suitable"){
 					$sql2 = "INSERT INTO matchresult (postID, userID) 
-						VALUES('$postID','$userID') 
-						ON DUPLICATE KEY UPDATE postID ='$postID', userID = '$userID'";
+						VALUES('$postID','$checkUserID') 
+						ON DUPLICATE KEY UPDATE postID ='$postID', userID = '$checkUserID'";
 					if(mysqli_query($con,$sql2)){
-						echo "Succesful.";
+						$current = file_get_contents($file);
+						$current .= "Succesful."."\r\n";
+						file_put_contents($file, $current);
+						
+						$javaResult = null;
 					}else{
-						echo "Insert failed.";
+						$current = file_get_contents($file);
+						$current .= "Insert failed."."\r\n";
+						file_put_contents($file, $current);
+						
 					}
 				}else if($javaResult[2] == "Not suitable"){ 
-					echo "Not suitable";
+					$current = file_get_contents($file);
+					$current .= "Not suitable."."\r\n";
+					file_put_contents($file, $current);
+				
+					$javaResult = null;
 				} else {
-					echo "Java file error";
+					$current = file_get_contents($file);
+					$current .= "Java file error."."\r\n";
+					file_put_contents($file, $current);
 				}
 				
 				
-			echo "\n";
+			} else {
+				$current = file_get_contents($file);
+				$current .= "Current user."."\r\n";
+				file_put_contents($file, $current);
 			}
 		
-		} else{
-			echo "No result.";
+
+				
+			}		
+				
+			
+			
+		
+	} else{
+			$current = file_get_contents($file);
+			$current .= "No result."."\r\n";
+			file_put_contents($file, $current);
 		}
 
 			
 	}
 	
+		echo "END";
 		mysqli_close($con);
 	}
 ?>
