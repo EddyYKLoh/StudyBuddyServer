@@ -77,3 +77,84 @@ Database
 Not suitable.
 4-xmatch xmatch high seldom
 Succesful.
+
+Machine learning
+1-match match high seldom
+Succesful.
+2-match match high alot
+Not suitable.
+3-Current user.
+
+Software engineering I
+2-xmatch xmatch low alot
+Not suitable.
+4-Current user.
+
+Operating system
+3-xmatch xmatch low alot
+Not suitable.
+4-Current user.
+
+Software engineering I
+2-xmatch xmatch low alot
+Not suitable.
+4-Current user.
+
+Operating system
+3-xmatch xmatch low alot
+Not suitable.
+4-Current user.
+
+Database
+1-xmatch xmatch low seldom
+Succesful.
+2-xmatch xmatch high alot
+Not suitable.
+4-Current user.
+
+Machine learning
+1-match match high seldom
+Succesful.
+2-Current user.
+3-match match high alot
+Not suitable.
+
+Natural language processing and generation
+1-match match high seldom
+Succesful.
+
+Fundamentals of robot intelligence
+No result.
+
+Database
+1-match match low seldom
+Succesful.
+2-Current user.
+4-xmatch xmatch high seldom
+Succesful.
+
+Operating system
+3-Current user.
+4-xmatch xmatch high seldom
+Succesful.
+
+Operating system
+3-match match low alot
+Not suitable.
+4-xmatch xmatch high seldom
+Succesful.
+
+Database
+1-Current user.
+2-match match high alot
+Not suitable.
+4-xmatch xmatch high seldom
+Succesful.
+
+Machine learning
+1-xmatch xmatch high seldom
+Succesful.
+2-xmatch xmatch high alot
+Not suitable.
+3-xmatch xmatch high alot
+Not suitable.

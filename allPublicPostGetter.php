@@ -15,14 +15,18 @@
 			while ($row = $result->fetch_assoc()){
 				if($first){
 					echo "".$row["name"]."";
-					echo ".";
+					echo "<SEPARATE>";
 					echo "".$row["publicPostTitle"]."";
+					echo "<SEPARATE>";
+					echo "".$row["profPicPath"]."";
 					$first = false;
 				}else{
 					echo "\n";
 					echo "".$row["name"]."";
-					echo ".";
+					echo "<SEPARATE>";
 					echo "".$row["publicPostTitle"]."";
+					echo "<SEPARATE>";
+					echo "".$row["profPicPath"]."";
 				
 				}
 				
